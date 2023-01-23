@@ -3,6 +3,7 @@ package com.example.news_app.services;
 import com.example.news_app.entity.News;
 import com.example.news_app.entity.Origin;
 import com.example.news_app.entity.Topic;
+import com.example.news_app.exceptions.NotFoundException;
 import com.example.news_app.repositories.NewsRepository;
 import com.example.news_app.repositories.OriginRepository;
 import com.example.news_app.repositories.TopicRepository;
