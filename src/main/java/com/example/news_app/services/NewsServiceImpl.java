@@ -8,6 +8,8 @@ import com.example.news_app.repositories.NewsRepository;
 import com.example.news_app.repositories.OriginRepository;
 import com.example.news_app.repositories.TopicRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,37 +26,42 @@ public class NewsServiceImpl implements NewsService {
     private final OriginRepository originRepository;
 
     @Override
-    public List<News> getAllNews() {
-        return newsRepository.findAll();
+    public List<News> getAllNews(PageRequest pageRequest) {
+        Page<News> page = newsRepository.findAll(pageRequest);
+        return page.getContent();
     }
 
     @Override
-    public List<News> getNewsByHeadingId(Long id) {
-        Optional<Topic> optionalHeading = topicRepository.findById(id);
-        if (optionalHeading.isEmpty()) {
+    public List<News> getNewsByTopicId(Long id, PageRequest pageRequest) {
+        Optional<Topic> optionalTopic = topicRepository.findById(id);
+        if (optionalTopic.isEmpty()) {
             throw new NotFoundException("Topic does not exist");
         }
-        Topic topic = optionalHeading.get();
-        return topic.getNews();
+        Topic topic = optionalTopic.get();
+        Page<News> page = newsRepository.findAllByTopic(topic, pageRequest);
+        return page.getContent();
     }
 
     @Override
-    public List<News> getNewsByOriginId(Long id) {
+    public List<News> getNewsByOriginId(Long id, PageRequest pageRequest) {
         Optional<Origin> optionalOrigin = originRepository.findById(id);
         if (optionalOrigin.isEmpty()) {
             throw new NotFoundException("Origin does not exist");
         }
         Origin origin = optionalOrigin.get();
-        return origin.getNews();
+        Page<News> page = newsRepository.findAllByOrigin(origin, pageRequest);
+        return page.getContent();
     }
 
     @Override
-    public List<Origin> getAllOrigins() {
-        return originRepository.findAll();
+    public List<Origin> getAllOrigins(PageRequest pageRequest) {
+        Page<Origin> page = originRepository.findAll(pageRequest);
+        return page.getContent();
     }
 
     @Override
-    public List<Topic> getAllTopic() {
-        return topicRepository.findAll();
+    public List<Topic> getAllTopic(PageRequest pageRequest) {
+        Page<Topic> page = topicRepository.findAll(pageRequest);
+        return page.getContent();
     }
 }
