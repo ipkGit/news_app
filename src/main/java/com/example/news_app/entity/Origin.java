@@ -1,5 +1,6 @@
 package com.example.news_app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class Origin {
     private String name;
 
     @OneToMany(mappedBy = "origin", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<News> news;
 
     @Override
