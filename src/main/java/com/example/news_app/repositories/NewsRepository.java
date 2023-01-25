@@ -17,10 +17,10 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
     Page<News> findAllByOrigin(Origin origin, Pageable pageable);
 
-    @Query(value = "select t.name, count(n.topic_id) from News n left join Topic t ON n.topic_id = t.id " +
+    @Query(value = "select t.name, count(n.topic_id) from news n left join topic t ON n.topic_id = t.id " +
             "where n.origin_id = :origin " +
             "group by n.topic_id, t.name",
             nativeQuery = true)
-    List<List<String>> getCountNewsByTopicFromOrigin(@Param("origin") Long origin);
+    List<String[]> getCountNewsByTopicFromOrigin(@Param("origin") Long origin);
 
 }

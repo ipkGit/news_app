@@ -22,7 +22,7 @@ public class Scheduler {
 
     private final NewsRepository newsRepository;
 
-    @Scheduled(cron = "0 55 * * * *")
+    @Scheduled(cron = "0 10 13 * * *")
     public void csvWriter() {
         List<Origin> origins = originRepository.findAll();
         for (Origin origin : origins) {
@@ -41,12 +41,10 @@ class WriterCSV implements Runnable {
     @Override
     public void run() {
         String file = origin.getName() + ".csv";
-        try (FileWriter fileWriter = new FileWriter(file)) {
-            CSVWriter csvWriter = new CSVWriter(fileWriter);
-            List<List<String>> topicsFromOrigin = newsRepository.getCountNewsByTopicFromOrigin(origin.getId());
-            for (List<String> topics : topicsFromOrigin) {
-                 String[] array = topics.toArray(new String[0]);
-                 csvWriter.writeNext(array);
+        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(file))) {
+            List<String[]> topicsFromOrigin = newsRepository.getCountNewsByTopicFromOrigin(origin.getId());
+            for (String[] topics : topicsFromOrigin) {
+                 csvWriter.writeNext(topics, false);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
