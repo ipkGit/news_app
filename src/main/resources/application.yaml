@@ -8,3 +8,8 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: validate
+
+
+jwt:
+  secret:
+    access: qBTmv4oXFFR2GwjexDJ4t6fsIUIUhhXqlktXjXdkcyygs8nPVEwMfo29VDRRepYDVV5IkIxBMzr7OEHXEHd37w==
