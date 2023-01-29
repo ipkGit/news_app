@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +34,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
     public List<News> getNewsByTopicId(Long id, PageRequest pageRequest) {
         Optional<Topic> optionalTopic = topicRepository.findById(id);
         if (optionalTopic.isEmpty()) {
@@ -43,6 +46,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
     public List<News> getNewsByOriginId(Long id, PageRequest pageRequest) {
         Optional<Origin> optionalOrigin = originRepository.findById(id);
         if (optionalOrigin.isEmpty()) {
